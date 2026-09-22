@@ -1,0 +1,747 @@
+{
+  "info": {
+    "_postman_id": "0e168d11-f5f8-45cc-bb6e-df49ea37acb6",
+    "name": "Final Assignment AfterOffice",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "5641697"
+  },
+  "item": [
+    {
+      "name": "01 - Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const jsonData = pm.response.json();\r",
+              "\r",
+              "// Simpan token otomatis\r",
+              "pm.collectionVariables.set(\"token\", jsonData.data.token);\r",
+              "\r",
+              "// Assertion status code\r",
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Assertion response body\r",
+              "pm.test(\"Login successful and token exists\", function () {\r",
+              "    pm.expect(jsonData.success).to.eql(true);\r",
+              "    pm.expect(jsonData.data.token).to.be.a(\"string\").and.not.empty;\r",
+              "});\r",
+              "\r",
+              "// Assertion response time\r",
+              "pm.test(\"Response time is below 2000ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"standard_user@example.com\",\r\n  \"password\": \"script_sauce\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api-script-labs.hendri.me/api/auth/login",
+          "protocol": "https",
+          "host": [
+            "api-script-labs",
+            "hendri",
+            "me"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "02 - GET All Labs",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const json = pm.response.json();",
+              "",
+              "pm.test(\"Response berisi array labs\", function () {",
+              "    pm.expect(json.success).to.eql(true);",
+              "    pm.expect(json.data).to.be.an(\"array\");",
+              "});",
+              "",
+              "pm.test(\"Response time di bawah 2000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api-script-labs.hendri.me/api/labs",
+          "protocol": "https",
+          "host": [
+            "api-script-labs",
+            "hendri",
+            "me"
+          ],
+          "path": [
+            "api",
+            "labs"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "03 - POST Create Lab",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "const json = pm.response.json();",
+              "",
+              "pm.collectionVariables.set(\"lab_id\", json.data.id);",
+              "",
+              "pm.test(\"Lab berhasil dibuat\", function () {",
+              "    pm.expect(json.success).to.eql(true);",
+              "    pm.expect(json.data.id).to.exist;",
+              "});",
+              "",
+              "pm.test(\"Response time di bawah 2000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+              "});",
+              "",
+              "console.log(\"lab_id tersimpan:\", json.data.id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Final Assignment API Testing {{$timestamp}}\",\n  \"description\": \"Lab created using Postman\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api-script-labs.hendri.me/api/labs",
+          "protocol": "https",
+          "host": [
+            "api-script-labs",
+            "hendri",
+            "me"
+          ],
+          "path": [
+            "api",
+            "labs"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "04 - GET Lab by ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Lab berhasil ditemukan\", function () {",
+              "    const json = pm.response.json();",
+              "    pm.expect(json.success).to.eql(true);",
+              "    pm.expect(json.data).to.exist;",
+              "    pm.expect(String(json.data.id))",
+              "        .to.eql(String(pm.collectionVariables.get(\"lab_id\")));",
+              "});",
+              "",
+              "pm.test(\"Response time di bawah 2000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api-script-labs.hendri.me/api/labs/{{lab_id}}",
+          "protocol": "https",
+          "host": [
+            "api-script-labs",
+            "hendri",
+            "me"
+          ],
+          "path": [
+            "api",
+            "labs",
+            "{{lab_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "05 - PUT Update Lab",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const json = pm.response.json();",
+              "",
+              "pm.test(\"Update lab berhasil\", function () {",
+              "    pm.expect(json.success).to.eql(true);",
+              "});",
+              "",
+              "pm.test(\"ID lab sesuai\", function () {",
+              "    pm.expect(String(json.data.id))",
+              "        .to.eql(String(pm.collectionVariables.get(\"lab_id\")));",
+              "});",
+              "",
+              "pm.test(\"Response time di bawah 2000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Final Assignment Updated {{$timestamp}}\",\r\n  \"description\": \"Lab berhasil diupdate menggunakan Postman\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api-script-labs.hendri.me/api/labs/{{lab_id}}",
+          "protocol": "https",
+          "host": [
+            "api-script-labs",
+            "hendri",
+            "me"
+          ],
+          "path": [
+            "api",
+            "labs",
+            "{{lab_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "06 - GET After Update",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const json = pm.response.json();",
+              "",
+              "pm.test(\"Lab berhasil ditemukan setelah update\", function () {",
+              "    pm.expect(json.success).to.eql(true);",
+              "    pm.expect(json.data).to.exist;",
+              "});",
+              "",
+              "pm.test(\"ID lab sesuai\", function () {",
+              "    pm.expect(String(json.data.id))",
+              "        .to.eql(String(pm.collectionVariables.get(\"lab_id\")));",
+              "});",
+              "",
+              "pm.test(\"Response time di bawah 2000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api-script-labs.hendri.me/api/labs/{{lab_id}}",
+          "protocol": "https",
+          "host": [
+            "api-script-labs",
+            "hendri",
+            "me"
+          ],
+          "path": [
+            "api",
+            "labs",
+            "{{lab_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "07 - DELETE Lab",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "const json = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Lab berhasil dihapus\", function () {\r",
+              "    pm.expect(json.success).to.eql(true);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response time di bawah 2000ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "https://api-script-labs.hendri.me/api/labs/{{lab_id}}",
+          "protocol": "https",
+          "host": [
+            "api-script-labs",
+            "hendri",
+            "me"
+          ],
+          "path": [
+            "api",
+            "labs",
+            "{{lab_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "08 - GET After Delete",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 404\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});",
+              "",
+              "const json = pm.response.json();",
+              "",
+              "pm.test(\"Lab sudah tidak ditemukan\", function () {",
+              "    pm.expect(json.success).to.eql(false);",
+              "    pm.expect(json.error).to.exist;",
+              "    pm.expect(json.error.message).to.eql(\"lab not found\");",
+              "});",
+              "",
+              "pm.test(\"Response time di bawah 2000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api-script-labs.hendri.me/api/labs/{{lab_id}}",
+          "protocol": "https",
+          "host": [
+            "api-script-labs",
+            "hendri",
+            "me"
+          ],
+          "path": [
+            "api",
+            "labs",
+            "{{lab_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "09 - POST Invalid",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 400\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});",
+              "",
+              "const json = pm.response.json();",
+              "",
+              "pm.test(\"Response menunjukkan validasi gagal\", function () {",
+              "    pm.expect(json.success).to.eql(false);",
+              "    pm.expect(json.error).to.exist;",
+              "    pm.expect(json.error.message).to.include(\"Validation Error\");",
+              "});",
+              "",
+              "pm.test(\"Response time di bawah 2000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"\",\r\n  \"description\": \"Invalid test empty title\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api-script-labs.hendri.me/api/labs",
+          "protocol": "https",
+          "host": [
+            "api-script-labs",
+            "hendri",
+            "me"
+          ],
+          "path": [
+            "api",
+            "labs"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "10 - POST Edge Case",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "const json = pm.response.json();",
+              "",
+              "pm.test(\"Edge case berhasil dibuat\", function () {",
+              "    pm.expect(json.success).to.eql(true);",
+              "    pm.expect(json.data).to.exist;",
+              "    pm.expect(json.data.id).to.exist;",
+              "    pm.expect(json.data.title).to.be.a(\"string\").and.not.empty;",
+              "});",
+              "",
+              "pm.test(\"Response time di bawah 2000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"EdgeCase-{{$timestamp}}\",\n  \"description\": \"Edge case testing minimum length {{$timestamp}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api-script-labs.hendri.me/api/labs",
+          "protocol": "https",
+          "host": [
+            "api-script-labs",
+            "hendri",
+            "me"
+          ],
+          "path": [
+            "api",
+            "labs"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "11 - POST CSV Data Drive",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code sesuai skenario CSV\", function () {\r",
+              "    pm.expect(pm.response.code).to.be.oneOf([201, 400, 409, 422]);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response adalah JSON\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response time di bawah 5000ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"{{title}} {{$timestamp}}\",\r\n  \"description\": \"{{description}} {{$timestamp}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api-script-labs.hendri.me/api/labs",
+          "protocol": "https",
+          "host": [
+            "api-script-labs",
+            "hendri",
+            "me"
+          ],
+          "path": [
+            "api",
+            "labs"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "lab_id",
+      "value": ""
+    },
+    {
+      "key": "json_web_token_0u8i",
+      "secret": true
+    },
+    {
+      "key": "auth_secret_0jl8",
+      "secret": true,
+      "source": {
+        "provider": "postman",
+        "postman": {
+          "type": "cloud",
+          "secretId": "ed02b45b-bf88-4451-a681-78dae9c60568",
+          "vaultId": "106c95da-c2a6-462f-9f03-e130fb9cc5dc"
+        }
+      }
+    },
+    {
+      "key": "json_web_token_0jl8",
+      "secret": true,
+      "source": {
+        "provider": "postman",
+        "postman": {
+          "type": "cloud",
+          "secretId": "31ae0f82-5dcc-4027-a55b-90a0b7f2b8d1",
+          "vaultId": "106c95da-c2a6-462f-9f03-e130fb9cc5dc"
+        }
+      }
+    }
+  ]
+}
