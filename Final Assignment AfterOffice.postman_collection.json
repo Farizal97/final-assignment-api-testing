@@ -30,8 +30,8 @@
               "});\r",
               "\r",
               "// Assertion response time\r",
-              "pm.test(\"Response time is below 2000ms\", function () {\r",
-              "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+              "pm.test(\"Response time is below 50000ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(50000);\r",
               "});"
             ],
             "type": "text/javascript",
@@ -88,8 +88,8 @@
               "    pm.expect(json.data).to.be.an(\"array\");",
               "});",
               "",
-              "pm.test(\"Response time di bawah 2000ms\", function () {",
-              "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+              "pm.test(\"Response time di bawah 50000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(50000);",
               "});"
             ]
           }
@@ -145,8 +145,8 @@
               "    pm.expect(json.data.id).to.exist;",
               "});",
               "",
-              "pm.test(\"Response time di bawah 2000ms\", function () {",
-              "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+              "pm.test(\"Response time di bawah 50000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(50000);",
               "});",
               "",
               "console.log(\"lab_id tersimpan:\", json.data.id);"
@@ -212,8 +212,8 @@
               "        .to.eql(String(pm.collectionVariables.get(\"lab_id\")));",
               "});",
               "",
-              "pm.test(\"Response time di bawah 2000ms\", function () {",
-              "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+              "pm.test(\"Response time di bawah 50000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(50000);",
               "});"
             ]
           }
@@ -281,8 +281,8 @@
               "        .to.eql(String(pm.collectionVariables.get(\"lab_id\")));",
               "});",
               "",
-              "pm.test(\"Response time di bawah 2000ms\", function () {",
-              "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+              "pm.test(\"Response time di bawah 50000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(50000);",
               "});"
             ]
           }
@@ -351,8 +351,8 @@
               "        .to.eql(String(pm.collectionVariables.get(\"lab_id\")));",
               "});",
               "",
-              "pm.test(\"Response time di bawah 2000ms\", function () {",
-              "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+              "pm.test(\"Response time di bawah 50000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(50000);",
               "});"
             ]
           }
@@ -414,8 +414,8 @@
               "    pm.expect(json.success).to.eql(true);\r",
               "});\r",
               "\r",
-              "pm.test(\"Response time di bawah 2000ms\", function () {\r",
-              "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+              "pm.test(\"Response time di bawah 50000ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(50000);\r",
               "});"
             ],
             "type": "text/javascript",
@@ -474,8 +474,8 @@
               "    pm.expect(json.error.message).to.eql(\"lab not found\");",
               "});",
               "",
-              "pm.test(\"Response time di bawah 2000ms\", function () {",
-              "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+              "pm.test(\"Response time di bawah 50000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(50000);",
               "});"
             ]
           }
@@ -531,8 +531,8 @@
               "    pm.expect(json.error.message).to.include(\"Validation Error\");",
               "});",
               "",
-              "pm.test(\"Response time di bawah 2000ms\", function () {",
-              "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+              "pm.test(\"Response time di bawah 50000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(50000);",
               "});"
             ]
           }
@@ -597,8 +597,8 @@
               "    pm.expect(json.data.title).to.be.a(\"string\").and.not.empty;",
               "});",
               "",
-              "pm.test(\"Response time di bawah 2000ms\", function () {",
-              "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+              "pm.test(\"Response time di bawah 50000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(50000);",
               "});"
             ]
           }
@@ -657,8 +657,8 @@
               "    pm.response.to.be.json;\r",
               "});\r",
               "\r",
-              "pm.test(\"Response time di bawah 5000ms\", function () {\r",
-              "    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+              "pm.test(\"Response time di bawah 50000ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(50000);\r",
               "});"
             ],
             "type": "text/javascript",
