@@ -25,5 +25,4 @@ jobs:
           postman collection run "Final Assignment AfterOffice.postman_collection.json" \
             -d "data_test.csv"
 
-      - name: Gatekeeper Test - Intentional Failure
-        run: exit 1
+     
